@@ -1,0 +1,64 @@
+import sys
+import random
+
+enemy={"health":20,"attack":10,"defense":0,"speed":10}
+
+hero={"health":100,"attack":10,"defense":10,"speed":20}
+
+
+def hero_action():
+    while True:
+        choice=input("What shall you do? (attack/defend/check/glance): ").lower()
+        if choice=="attack":
+            enemy["health"]=enemy["health"]-hero["attack"]
+            print("you dealt "+str(hero["attack"])+" damage")
+            break
+        if choice=="defend":
+            enemy_blocked=hero["defense"]-enemy["attack"]
+            hero["health"]=hero["health"]-enemy_blocked
+            break
+        if choice=="check":
+            print("your health is "+str(hero["health"]))
+            print("your attack is "+str(hero["attack"]))
+            print("your defense is "+str(hero["defense"]))
+            print("your speed is "+str(hero["speed"]))
+            continue
+        if choice=="glance":
+            print("theyre attack is "+str(enemy["attack"]))
+            print("theyre health is "+str(enemy["health"]))
+            print("theyre defense is "+str(enemy["defense"]))
+            print("theyre speed is "+str(enemy["speed"]))
+            continue
+
+def slime_ai():
+    slime_choice=random.randint(1,4)
+    if slime_choice==1:
+        print("The Slime hit a jig")
+    elif slime_choice==2:
+        print("the slime just stood there, MENACINGLY")
+    elif slime_choice==3:
+        print("gleeble")
+    elif slime_choice==4:
+        hero["health"]=hero["health"]-enemy["attack"]
+        print("the enemy attacked you! dealing "+str(enemy["attack"]) )
+
+start_prompt=input("Would you like to go on an adventure?(YES/NO): ").lower()
+
+if start_prompt=="yes":
+    in_combat=True
+else:
+    in_combat=False
+
+while in_combat==True:
+    if hero["health"]<=0:
+        print("GAME OVER")
+        sys.exit()
+    if enemy["health"]<=0:
+        print("YOU WIN")
+        sys.exit()
+    elif hero["speed"]>enemy["speed"]:
+        hero_action()
+        slime_ai()
+    elif enemy["speed"]>hero["speed"]:
+        slime_ai()
+        hero_action()
